@@ -3,7 +3,7 @@
 /**
  * Classe Membre : represente un membre de la bibliotheque.
  *
- * Peut emprunter jusqu'a 3 livres maximum.
+ * Peut emprunter jusqu'a 5 livres maximum.
  */
 class Membre
 {
@@ -29,13 +29,13 @@ class Membre
     }
 
     /**
-     * Emprunte un livre (3 livres maximum).
-     * @throws Exception si le membre a deja 3 emprunts
+     * Emprunte un livre (5 livres maximum).
+     * @throws Exception si le membre a deja 5 emprunts
      */
     public function emprunter(Livre $l): void
     {
-        if (count($this->emprunts) >= 3) {
-            throw new Exception("Le membre {$this->nom} a atteint la limite de 3 emprunts.");
+        if (count($this->emprunts) >= 5) {
+            throw new Exception("Le membre {$this->nom} a atteint la limite de 5 emprunts.");
         }
         $l->emprunter();
         $this->emprunts[] = $l;
