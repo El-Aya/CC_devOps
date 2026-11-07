@@ -85,7 +85,7 @@ class Bibliotheque
         return [
             'total' => $total,
             'disponibles' => $disponibles,
-            'empruntes' => $total - $disponibles,
+            'empruntes' => $total - $disponibles +1 ,
             'taux_disponibilite' => $total > 0 ? round($disponibles / $total * 100, 1) : 0.0,
         ];
     }
