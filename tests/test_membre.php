@@ -13,30 +13,37 @@ $m->emprunter($livre1);
 verifier(count($m->getEmprunts()) === 1, 'Apres 1 emprunt : 1 livre');
 verifier(!$livre1->estDisponible(), 'Le livre est indisponible apres emprunt par le membre');
 
-// Test : emprunter un deuxieme livre
+// Test : emprunter les livres 2 a 5
 $livre2 = new Livre('9780132350884', 'Clean Code', 'Martin');
 $m->emprunter($livre2);
 verifier(count($m->getEmprunts()) === 2, 'Apres 2 emprunts : 2 livres');
 
-// Test : emprunter un troisieme livre (limite)
 $livre3 = new Livre('9780201633610', 'Patterns', 'Gamma');
 $m->emprunter($livre3);
-verifier(count($m->getEmprunts()) === 3, 'Apres 3 emprunts : 3 livres (limite atteinte)');
+verifier(count($m->getEmprunts()) === 3, 'Apres 3 emprunts : 3 livres');
 
-// Test : emprunter un quatrieme livre (depasse la limite de 3)
 $livre4 = new Livre('9780596007126', 'UML', 'Fowler');
+$m->emprunter($livre4);
+verifier(count($m->getEmprunts()) === 4, 'Apres 4 emprunts : 4 livres');
+
+$livre5 = new Livre('9780321125217', 'DDD', 'Evans');
+$m->emprunter($livre5);
+verifier(count($m->getEmprunts()) === 5, 'Apres 5 emprunts : 5 livres (limite atteinte)');
+
+// Test : emprunter un sixieme livre (depasse la limite de 5)
+$livre6 = new Livre('9780134494166', 'Architecture', 'Martin');
 $exceptionLimite = false;
 try {
-    $m->emprunter($livre4);
+    $m->emprunter($livre6);
 } catch (Exception $e) {
     $exceptionLimite = true;
 }
-verifier($exceptionLimite, 'Emprunter un 4eme livre leve une exception (limite 3)');
-verifier($livre4->estDisponible(), 'Le 4eme livre reste disponible apres exception');
+verifier($exceptionLimite, 'Emprunter un 6eme livre leve une exception (limite 5)');
+verifier($livre6->estDisponible(), 'Le 6eme livre reste disponible apres exception');
 
 // Test : rendre un livre
 $m->rendre($livre1);
-verifier(count($m->getEmprunts()) === 2, 'Apres rendu : 2 emprunts');
+verifier(count($m->getEmprunts()) === 4, 'Apres rendu : 4 emprunts');
 verifier($livre1->estDisponible(), 'Le livre rendu est de nouveau disponible');
 
 // Test : rendre un livre non emprunte
@@ -51,4 +58,4 @@ verifier($exceptionNonEmprunte, 'Rendre un livre non emprunte leve une exception
 
 // Test : apres rendu, on peut re-emprunter
 $m->emprunter($livre1);
-verifier(count($m->getEmprunts()) === 3, 'Apres re-emprunt : 3 livres');
+verifier(count($m->getEmprunts()) === 5, 'Apres re-emprunt : 5 livres');
