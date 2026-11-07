@@ -58,3 +58,22 @@ $l4 = new Livre('9780596007126', 'Algo Avance', 'Cormen');
 $bib->ajouter($l4);
 $res4 = $bib->rechercher('algo');
 verifier(count($res4) === 2, 'rechercher("algo") trouve 2 livres');
+
+
+// Test : statistiques d'une bibliotheque vide
+$statsVide = (new Bibliotheque())->statistiques();
+verifier($statsVide['total'] === 0, 'statistiques() : total 0 si bibliotheque vide');
+verifier($statsVide['taux_disponibilite'] === 0.0, 'statistiques() : taux 0 si bibliotheque vide (pas de division par zero)');
+
+// Test : statistiques, tous les livres disponibles ($bib contient 4 livres ici)
+$stats = $bib->statistiques();
+verifier($stats['total'] === 4, 'statistiques() : total 4');
+verifier($stats['disponibles'] === 4, 'statistiques() : 4 disponibles');
+verifier($stats['taux_disponibilite'] === 100.0, 'statistiques() : taux 100% si rien emprunte');
+
+// Test : statistiques apres un emprunt
+$l1->emprunter();
+$stats2 = $bib->statistiques();
+verifier($stats2['disponibles'] === 3, 'statistiques() : 3 disponibles apres un emprunt');
+verifier($stats2['empruntes'] === 1, 'statistiques() : 1 emprunte');
+verifier($stats2['taux_disponibilite'] === 75.0, 'statistiques() : taux 75%');
